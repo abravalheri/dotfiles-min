@@ -86,10 +86,13 @@ Plug 'tpope/vim-eunuch'
 Plug 'airblade/vim-gitgutter'
 Plug 'chrisbra/recover.vim'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'morhetz/gruvbox'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+colorscheme gruvbox
 
 " Key bindings: {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

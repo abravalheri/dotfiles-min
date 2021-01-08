@@ -15,7 +15,7 @@ setopt share_history          # share command history data
 
 ## Custom Aliases/Commands/Functions {{{
 
-alias tre="tree -I 'node_modules|.venv|__pycache__|*.py[cod]|.cache|*.swp|*~|*.egg|*.eggs|.tox|.nox|.mypy_cache|.*.swp'"
+alias tre="tree -I '.git|node_modules|.venv|__pycache__|*.py[cod]|.cache|*.swp|*~|*.egg|*.eggs|.tox|.nox|.mypy_cache|.*.swp'"
 
 command-exists() {
   which "$1" &>/dev/null || command -v "$1" &>/dev/null
