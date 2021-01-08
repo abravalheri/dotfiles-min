@@ -26,7 +26,7 @@ stow <FOLDER NAME>
 
 To stow all the folders, the following command can be used:
 ```bash
-stow -R $(ls -d *)
+stow -R $(ls -d */ | xargs | sed 's:/::g')
 ```
 
 If you want to also swap the default shell to ZSH, please do:
