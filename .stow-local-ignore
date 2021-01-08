@@ -1,15 +1,1 @@
-.+\.txt
-.+\.md
-.+\.rst
-
-README.*
-LICENSE.*
-COPYING.*
-
-\.git.+
-.+~
-.+\.swp
-.+\.swo
-\#.*\#
-.nfs*
-.Trash-*
+stow/.stow-global-ignore
