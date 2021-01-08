@@ -12,7 +12,6 @@ set shiftwidth=2
 set expandtab
 set textwidth=79        " default wrapping
 set autoindent
-filetype indent on      " activates indenting for files
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 
@@ -65,6 +64,8 @@ set wildignore+=**/.sass-cache/**
 set wildignore+=**/*.egg-info/**
 
 colorscheme delek
+
+filetype plugin indent on
 
 " Plugins: {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
