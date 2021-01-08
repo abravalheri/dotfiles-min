@@ -35,4 +35,9 @@ export GRML_NO_SMALL_ALIASES=1
 
 # Remove '/' from wordchars to allow word deletion on files
 export WORDCHARS=$(sed 's|/||' <<< $WORDCHARS)
+
+# Autojump needs to be sourced before compinit
+if [[ -f /usr/share/autojump/autojump.zsh ]]; then
+  source /usr/share/autojump/autojump.zsh
+fi
 # }}}
