@@ -83,7 +83,7 @@ if command -v bashcompinit &>/dev/null; then
   for fp in $HOME/.local/etc/bash_completion.d/*(.); source $fp
 fi
 
-if [[ command-exists conda ]]; then
+if command-exists conda; then
   # Equivalent to conda init, but without restarting
   source "$(conda info --root)/etc/profile.d/conda.sh"
 fi
