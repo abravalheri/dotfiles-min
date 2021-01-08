@@ -1,0 +1,96 @@
+#!/usr/bin/env zsh
+# vim: set foldmethod=marker :
+
+## Fixes after GRML {{{
+: ${HISTFILE:=$ZDOTDIR/.zsh_history}
+export HISTSIZE=100000
+export SAVEHIST=100000
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_ignore_all_dups   # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history data
+# }}}
+
+## Custom Aliases/Commands/Functions {{{
+
+alias tre="tree -I 'node_modules|.venv|__pycache__|*.py[cod]|.cache|*.swp|*~|*.egg|*.eggs|.tox|.nox|.mypy_cache|.*.swp'"
+
+command-exists() {
+  which "$1" &>/dev/null || command -v "$1" &>/dev/null
+}
+
+zsh-reload() {
+  source "${ZDOTDIR:-$HOME/.congig/zsh}/.zshrc"
+}
+
+top10() {
+  print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10
+}
+
+show-colors() {
+  local i
+  for i in {0..255}; do
+    printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+  done
+}
+
+activate-venv() {
+  local project_root=$(pwd -P 2>/dev/null || command pwd)
+  while [ ! -d "${project_root}/.venv" ]; do
+    project_root=${project_root%/*}
+    if [ "${project_root}" = "" ]; then
+      echo "Virtual env not found enywhere in the current path" >&2
+      return 1
+    fi
+  done
+  source "${project_root}/.venv/bin/activate"
+  echo "${project_root}/.venv activated"
+}
+
+activate-conda() {
+  local project_root=$(pwd -P 2>/dev/null || command pwd)
+  while [ ! -d "${project_root}/.conda" ]; do
+    project_root=${project_root%/*}
+    if [ "${project_root}" = "" ]; then
+      echo "Conda env not found enywhere in the current path" >&2
+      return 1
+    fi
+  done
+  conda activate "${project_root}/.conda"
+  echo "${project_root}/.conda activated"
+}
+
+restart-network() {
+  local interface=${1:-"enp0s3"}
+  sudo ifdown "$interface" && sudo ifup "$interface"
+}
+
+rcp() {
+  # scp but using rsync
+  rsync --progress --exclude-from "${XDG_CONFIG_HOME-$HOME/config/rsync}/exclude}" -v -rc -e ssh "$@"
+}
+
+# }}}
+
+## Tools {{{
+if command -v bashcompinit &>/dev/null; then
+  # Add bash completion for packages installed using stow
+  autoload bashcompinit
+  bashcompinit
+
+  for fp in $HOME/.local/etc/bash_completion.d/*(.); source $fp
+fi
+
+if [[ command-exists conda ]]; then
+  # Equivalent to conda init, but without restarting
+  source "$(conda info --root)/etc/profile.d/conda.sh"
+fi
+
+if command-exists ruby; then
+  export PATH  # Make sure ruby have access to the updated PATH
+  PATH="$(ruby -e 'print (ENV["PATH"].split(":") + [Gem.bindir, Gem.user_dir + "/bin"]).uniq.compact.join(":")')"
+  export PATH  # Make sure updated version of env var is available
+fi
+# }}}

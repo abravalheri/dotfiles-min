@@ -1,0 +1,160 @@
+" vim: set foldmethod=marker :
+scriptencoding utf8
+set nocompatible
+
+set hidden              " Switch between buffers without having to save first.
+
+set autoread            " reload file on changes
+
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set textwidth=79        " default wrapping
+set autoindent
+filetype indent on      " activates indenting for files
+
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+
+set showmode
+
+set history=5000
+set undolevels=1000
+set ruler
+set diffopt+=iwhite,vertical "Ignore changes in amount of white space
+set showcmd
+set cursorline
+set visualbell
+
+set showmatch
+set smartcase
+
+if exists('+colorcolumn')
+  autocmd FileType {text,vim,sh} set colorcolumn=+1  " one character after textwidth
+endif
+
+" line numbering in hybrid mode for easier motions
+set number
+if exists('+relativenumber')
+  set relativenumber
+endif
+
+" new splits open below and right
+set splitbelow
+set splitright
+
+" search
+set incsearch     " do incremental searching
+set ignorecase
+set smartcase     " if the regex has an upper letter, do not ignore case
+set wrapscan      " circular search through the file
+
+" command line autocompletion
+set path+=**
+set wildmenu
+set wildignorecase
+set wildmode=longest,full
+set wildignore+=*.swp,*.bak,*.pyc,*.class,*.o,*.a
+set wildignore+=**/__pycache__/**
+set wildignore+=**/node_modules/**
+set wildignore+=**/bower_components/**
+set wildignore+=**/dist/**
+set wildignore+=**/coverage/**
+set wildignore+=**/.bundle/**
+set wildignore+=**/.sass-cache/**
+set wildignore+=**/*.egg-info/**
+
+colorscheme delek
+
+" Plugins: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  augroup install_vim_plug
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-eunuch'
+Plug 'airblade/vim-gitgutter'
+Plug 'chrisbra/recover.vim'
+Plug 'jmcantrell/vim-virtualenv'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'sheerun/vim-polyglot'
+call plug#end()
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Key bindings: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader="\\"
+
+" instead of using Ex mode, use Q for formatting
+" the current paragraph or selection
+nnoremap Q gqap
+vnoremap Q gq
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-u> <C-g>u<C-u>
+
+" ç is easier than : (and it is in the same position for ABNT keyboards)
+nnoremap ç :
+" also exchange ;(less frequent) and :
+nnoremap ; :
+nnoremap : ;
+
+vnoremap ç :
+vnoremap ; :
+vnoremap : ;
+
+" clean search highlight with a space | entering in insert mode:
+nnoremap <silent> <bs> :nohlsearch<cr>
+
+" toggle auto-indenting for code paste
+set pastetoggle=<f6>
+" re-select pasted lines (would be nnoremap gp `[v`], but the following map is
+" more powerful -- https://vim.fandom.com/wiki/Selecting_your_pasted_text)
+nnoremap <expr> gp "`[" . strpart(getregtype(), 0, 1) . "`]"
+
+" save file as root
+" (https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work#7078429)
+cmap W!! w !sudo tee > /dev/null %
+
+" quickly edit/reload the vimrc file
+" (from http://nvie.com/posts/how-i-boosted-my-vim/)
+noremap <silent> <leader>ve :<c-u>e $MYVIMRC<cr>
+noremap <silent> <leader>vs :<c-u>so $MYVIMRC<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Abbreviations: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+cabbr <expr> %% expand('%:p:h')
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Auto Commands: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup stop_hlsearch
+  autocmd!
+  autocmd InsertEnter * :setlocal nohlsearch
+  autocmd InsertLeave * :setlocal hlsearch
+augroup END
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Macros: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" execute macros over selected text
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  exec ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+nnoremap <silent> ,o   :<C-u>execute "normal! \eo\e"<cr>
+nnoremap <silent> ,O   :<C-u>execute "normal! \eO\e"<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
