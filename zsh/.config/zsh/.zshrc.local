@@ -69,7 +69,7 @@ restart-network() {
 
 rcp() {
   # scp but using rsync
-  rsync --progress --exclude-from "${XDG_CONFIG_HOME-$HOME/config/rsync}/exclude}" -v -rc -e ssh "$@"
+  rsync --progress --exclude-from "${XDG_CONFIG_HOME:-$HOME/config}/rsync/exclude}" -v -rc -e ssh "$@"
 }
 
 # }}}
