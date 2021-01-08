@@ -9,6 +9,7 @@ tags.temp
 *.zwc
 *.zdirs
 *.zcompdump
+*.zsh_history
 
 # Created by https://www.gitignore.io
 
