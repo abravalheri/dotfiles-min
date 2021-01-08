@@ -92,6 +92,7 @@ Plug 'sheerun/vim-polyglot'
 call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+set background=dark
 colorscheme gruvbox
 
 " Key bindings: {{{
