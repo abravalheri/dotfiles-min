@@ -67,6 +67,22 @@ colorscheme delek
 
 filetype plugin indent on
 
+" Configure Statusline: {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" spiiph's
+" jamessan's
+set statusline=   " clear the statusline for when vimrc is reloaded
+set statusline+=%-3.3n\                      " buffer number
+set statusline+=%f\                          " file name
+set statusline+=%h%m%r%w                     " flags
+set statusline+=%=                           " right align
+set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
+set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
+set statusline+=%{&fileformat}]\             " file format
+set statusline+=%16((%l,%c)%)\               " line and column
+set statusline+=%4(%p%{'%'}%)                " percentage of file
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
 " Plugins: {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if empty(glob('~/.vim/autoload/plug.vim'))
