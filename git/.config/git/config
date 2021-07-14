@@ -32,8 +32,8 @@
   autosetupmerge = true
 [rerere]
   enabled = true
-# [include]
-#   path=~/.config/git/+local.conf
+[include]
+  path=~/.config/git/+local.conf
 [alias]
   forget = credential-cache exit
   untracked = ls-files --others --exclude-standard
